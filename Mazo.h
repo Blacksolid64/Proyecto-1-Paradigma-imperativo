@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 /*#############################*/
 /*####Definicion de Macros#####*/
 /*#############################*/
@@ -28,7 +29,7 @@ void establecerMazo(struct Mazo mazo[]){//Establece los valores de la baraja en 
     for (int i = 0; i<CARTAS; i++){ //Itera sobre el numero de cartas del tipo de baraja
         char buffer[10];
         sprintf(buffer,"%d",i%13); //Funcion para convertir un valor numerico a un caracter.
-        switch(i%13){ //Determina si el numero actual corresponde a un valor no númerico dentro de la baraja por medio del modulo de 13
+        switch(i%13){ //Determina si el numero actual corresponde a un valor no nï¿½merico dentro de la baraja por medio del modulo de 13
                 case 0:
                     strcpy(mazo[i].numero,"As"); //Copia el valor de un string a otro
                     break;
@@ -76,6 +77,7 @@ void sacarCartas(struct Mazo mazo[]){ //Saca 5 cartas aleatorias del mazo
         }
     }
 };
+
 /*
 TODO:
 1) Parar cuando no hayan cartas suficientes en el mazo
