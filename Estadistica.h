@@ -7,7 +7,7 @@
 #include "math.h"
 #include "conio.h"
 
-double obtener_promedio(int cantidad, int *datos){
+double obtener_promedio(int cantidad, double *datos){
   double suma = 0;
   for (size_t i = 0; i < cantidad; i++) {
     suma += datos[i];
@@ -15,7 +15,7 @@ double obtener_promedio(int cantidad, int *datos){
   return suma / cantidad;
 }
 
-double obtener_varianza(int cantidad, int *datos){
+double obtener_varianza(int cantidad, double *datos){
   int n = cantidad;
   double promedio = obtener_promedio(n, datos);
   double varianza = 0;
