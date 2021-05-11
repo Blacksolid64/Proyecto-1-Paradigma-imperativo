@@ -7,6 +7,7 @@ int main()
 {
     int m;
     struct Mazo mimazo[CARTAS];
+    //la mano deberia ser de 5 cartas, nada más
     struct Mano mimano[CARTAS];
 
     establecerMazo(mimazo);
