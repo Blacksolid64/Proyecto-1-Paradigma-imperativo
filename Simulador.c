@@ -6,9 +6,9 @@
 int main()
 {
     int m;
-    struct Mazo mimazo[CARTAS];
+    struct Carta mimazo[CARTAS];
     //la mano deberia ser de 5 cartas, nada más
-    struct Mano mimano[CARTAS];
+    struct Carta mimano[CARTAS];
 
     establecerMazo(mimazo);
     //mostrarCartas(mimazo);
