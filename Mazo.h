@@ -14,7 +14,8 @@
 /*##Definicion de estructuras##*/
 /*#############################*/
 
-struct Mazo{ // Representa un mazo de cartas
+//es una carta
+struct Carta{ // Representa un mazo de cartas
     char palo[10]; // el palo de la carta
     char numero[8]; // el numero de la carta
     unsigned int estado : 1; // Indica si la carta ya fue sacada del mazo;
@@ -29,7 +30,9 @@ struct Mano{ // Representa la mano de cartas exxtraida
 /*###Definicion de funciones###*/
 /*#############################*/
 //
-void establecerMazo(struct Mazo mazo[]){//Establece los valores de la baraja en el mazo
+//esta funcion crea el mazo
+//mazo es un array de 52 cartas
+void establecerMazo(struct Carta mazo[]){//Establece los valores de la baraja en el mazo
     char *Palos[4] = { "oros", "copas", "espadas", "bastos" }; //Las denominaciones del tipo de baraja
     for (int i = 0; i<CARTAS; i++){ //Itera sobre el numero de cartas del tipo de baraja
         char buffer[10];
@@ -60,7 +63,7 @@ void establecerMazo(struct Mazo mazo[]){//Establece los valores de la baraja en 
         }
     };
 
-void mostrarCartas(struct Mazo mazo[]){ //Imprime todas las cartas en el mazo
+void mostrarCartas(struct Carta mazo[]){ //Imprime todas las cartas en el mazo
     for (int i = 0; i<CARTAS; i++){
             printf("Palo:%s\t",mazo[i].palo);
             printf("Numero:%s\t",mazo[i].numero);
@@ -69,7 +72,8 @@ void mostrarCartas(struct Mazo mazo[]){ //Imprime todas las cartas en el mazo
 
 };
 
-void sacarCartas(struct Mazo mazo[],struct Mano mano[]){ //Saca 5 cartas aleatorias del mazo
+//no sé para que son los dos array de cartas
+void sacarCartas(struct Carta mazo[],struct Carta mano[]){ //Saca 5 cartas aleatorias del mazo
     for (int i = 0; i < TOMA; i++){
         for(;;){ // Ciclo infinito hasta que encuentre una carta que no haya sido sacada
             int VA = rand() % CARTAS; //Valor Aleatorio para determinar la carta a sacar
@@ -85,12 +89,12 @@ void sacarCartas(struct Mazo mazo[],struct Mano mano[]){ //Saca 5 cartas aleator
     }
 };
 
-void isroyal(struct Mano mano[]){   //Verifica si existe una escalera real dentro de la mano
+void isroyal(struct Carta mano[]){   //Verifica si existe una escalera real dentro de la mano
     int cont =0;                    //Contador de cartas que perfenecen a la escalera real
     if(strcmp(mano[0].palo, mano[1].palo)==0 && strcmp(mano[0].palo, mano[2].palo)==0 && strcmp(mano[0].palo, mano[3].palo)==0 && strcmp(mano[0].palo, mano[4].palo)==0){ //Verifica si todas las cartas son del mismo palo
         for (int i = 0; i<TOMA; i++){
             if(strcmp(mano[i].numero, "10")==0 || strcmp(mano[i].numero, "Jota")==0 || strcmp(mano[i].numero, "Rey")==0 || strcmp(mano[i].numero, "Reina")==0 || strcmp(mano[i].numero, "As")==0 ){ //Verifica si existe la combinacion de escalera real
-                cont+=1; 
+                cont+=1;
             }
         }
     }
@@ -101,7 +105,7 @@ void isroyal(struct Mano mano[]){   //Verifica si existe una escalera real dentr
     }
 };
 
-void isfullhouse(struct Mano mano[]){   //Verifica si existe un full house dentro de la mano
+void isfullhouse(struct Carta mano[]){   //Verifica si existe un full house dentro de la mano
     int firstcount=1;                   //Contador del primer numero de carta observado
     int seccount=0;                     //Contador del segundo numero de carta observado
     char numsec[8] = "";
@@ -126,7 +130,7 @@ void isfullhouse(struct Mano mano[]){   //Verifica si existe un full house dentr
 };
 
 
-void isdouble(struct Mano mano[]){ //Verifica si existe un quad dentro de la mano
+void isdouble(struct Carta mano[]){ //Verifica si existe un quad dentro de la mano
     int firstcount=1;   //Contador del primer numero de carta observado
     int seccount=0;     //Contador del segundo numero de carta observado
     int thirdcount=0;   //Contador del tercer numero de carta observado
@@ -163,7 +167,7 @@ void isdouble(struct Mano mano[]){ //Verifica si existe un quad dentro de la man
 };
 
 
-void isquad(struct Mano mano[]){ //Verifica si existe un double dentro de la mano
+void isquad(struct Carta mano[]){ //Verifica si existe un double dentro de la mano
     int firstcount=1;   //Contador del primer numero de carta observado
     int seccount=0;     //Contador del segundo numero de carta observado
     char numsec[8] = "";//ALmacena el segundo valor observado
@@ -193,4 +197,3 @@ TODO:
 1) Parar cuando no hayan cartas suficientes en el mazo
 */
 #endif // TEST_H_INCLUDED
-

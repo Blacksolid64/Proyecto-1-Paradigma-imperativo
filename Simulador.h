@@ -6,7 +6,7 @@
 
 struct Simulador {
 
-    struct Mazo *mazo;//debe ser un puntero
+    struct Carta mazo[CARTAS];//debe ser un puntero
     //contadores para cada n manos
     int countDoubles;//dos pares
     int countFull;//full house
