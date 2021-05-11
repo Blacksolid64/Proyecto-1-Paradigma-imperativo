@@ -20,6 +20,11 @@ struct Mazo{ // Representa un mazo de cartas
     unsigned int estado : 1; // Indica si la carta ya fue sacada del mazo;
 };
 
+struct Mano{ // Representa la mano de cartas exxtraida
+    char palo[10]; // el palo de la carta
+    char numero[8]; // el numero de la carta
+};
+
 /*#############################*/
 /*###Definicion de funciones###*/
 /*#############################*/
@@ -64,22 +69,128 @@ void mostrarCartas(struct Mazo mazo[]){ //Imprime todas las cartas en el mazo
 
 };
 
-void sacarCartas(struct Mazo mazo[]){ //Saca 5 cartas aleatorias del mazo
+void sacarCartas(struct Mazo mazo[],struct Mano mano[]){ //Saca 5 cartas aleatorias del mazo
     for (int i = 0; i < TOMA; i++){
         for(;;){ // Ciclo infinito hasta que encuentre una carta que no haya sido sacada
             int VA = rand() % CARTAS; //Valor Aleatorio para determinar la carta a sacar
-            printf("%d\n",VA);
+            //printf("%d\n",VA);
             if (mazo[VA].estado == 0){
                     mazo[VA].estado = 1;
                     printf("Palo:%s\tNumero:%s\n",mazo[VA].palo,mazo[VA].numero);
+                    strcpy(mano[i].numero, mazo[VA].numero);
+                    strcpy(mano[i].palo,mazo[VA].palo);
                     break;
             }
         }
     }
 };
 
+void isroyal(struct Mano mano[]){   //Verifica si existe una escalera real dentro de la mano
+    int cont =0;                    //Contador de cartas que perfenecen a la escalera real
+    if(strcmp(mano[0].palo, mano[1].palo)==0 && strcmp(mano[0].palo, mano[2].palo)==0 && strcmp(mano[0].palo, mano[3].palo)==0 && strcmp(mano[0].palo, mano[4].palo)==0){ //Verifica si todas las cartas son del mismo palo
+        for (int i = 0; i<TOMA; i++){
+            if(strcmp(mano[i].numero, "10")==0 || strcmp(mano[i].numero, "Jota")==0 || strcmp(mano[i].numero, "Rey")==0 || strcmp(mano[i].numero, "Reina")==0 || strcmp(mano[i].numero, "As")==0 ){ //Verifica si existe la combinacion de escalera real
+                cont+=1; 
+            }
+        }
+    }
+    if (cont==5){                   //Existen las 5 cartas que forman la escalera real?
+        printf("Es Escalera Real\n");
+    }else{
+        //printf("No es una escalera real\n");
+    }
+};
+
+void isfullhouse(struct Mano mano[]){   //Verifica si existe un full house dentro de la mano
+    int firstcount=1;                   //Contador del primer numero de carta observado
+    int seccount=0;                     //Contador del segundo numero de carta observado
+    char numsec[8] = "";
+
+    for (int i = 1; i<TOMA; i++){       //Ciclo que recorre las 5 cartas del mazo
+        if(strcmp(mano[0].numero, mano[i].numero)==0 ){ //Compara la primer carta con las demas
+            firstcount+=1;                              //Si tienen el mismo numero, incrementa el contador
+        }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){
+            //Si la variable numsec ya fue asignada, entonces hay 3 numeros distintos, por lo tanto no puede haber un full house
+            //printf("No es un fullhouse\n");
+            break;
+        }else{
+            strcpy(numsec,mano[i].numero);  //Se asigna un segundo numero para hacer las comparaciones
+            seccount +=1;
+        }
+    }
+    if (seccount==3 && firstcount==2 || seccount==2 && firstcount==3){ //3 Y 2 son las unicas combinaciones posibles para full house
+        printf("Es un fullhouse\n");
+    } else{
+        //printf("No es un fullhouse\n");
+    }
+};
+
+
+void isdouble(struct Mano mano[]){ //Verifica si existe un quad dentro de la mano
+    int firstcount=1;   //Contador del primer numero de carta observado
+    int seccount=0;     //Contador del segundo numero de carta observado
+    int thirdcount=0;   //Contador del tercer numero de carta observado
+    char numsec[8] = "";//Almacena el segundo dato observado
+    char numthird[8] = "";//Almacena el tercer dato observado
+
+    for (int i = 1; i<TOMA; i++){   //Recorre la mano
+        if(strcmp(mano[0].numero, mano[i].numero)==0 ){ //Compara el primer numero de carta con los demas
+            firstcount+=1;
+        }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){//Ya se usò la variable y no coincide con la carta actual del ciclo?
+            if(strcmp(numthird, "")!=0 && strcmp(numthird, mano[i].numero)!=0){//Ya se usò la variable y no coincide con la carta actual del ciclo?
+                //printf("No es un double pair\n");
+                break;  //No puede haber una combinacion de double
+            }else{
+                strcpy(numthird,mano[i].numero);  //Se copia el valor de la carta actual a numthird
+                thirdcount +=1;
+            }
+        }else{
+            strcpy(numsec,mano[i].numero);      //Se copia el valor de la carta actual a numsec
+            seccount +=1;
+        }
+    }
+    //Analiza las posibles combinaciones de un double pair
+    if (firstcount==2 && seccount==2){
+        printf("Es un double pair\n");
+    }else if (firstcount==2 && thirdcount==2){
+        printf("Es un double pair\n");
+    }else if (thirdcount==2 && seccount==2){
+        printf("Es un double pair\n");
+    }else{
+        //printf("No es un double pair\n");
+    }
+
+};
+
+
+void isquad(struct Mano mano[]){ //Verifica si existe un double dentro de la mano
+    int firstcount=1;   //Contador del primer numero de carta observado
+    int seccount=0;     //Contador del segundo numero de carta observado
+    char numsec[8] = "";//ALmacena el segundo valor observado
+
+    for (int i = 1; i<TOMA; i++){   //Recorre la mano de cartas
+        if(strcmp(mano[0].numero, mano[i].numero)==0 ){ //Coinciden las cartas?
+            firstcount+=1;
+        }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){//Si no coinciden y la segunda variable fue usada, no puede existir un quad
+            break;
+        }else{
+            strcpy(numsec,mano[i].numero); //Se asigna el numero de la carta a la variable
+            seccount +=1;
+        }
+    }
+    if (firstcount==4 || seccount==4){  //La primer o segunda carta se reite 4 veces?
+        printf("Es un quad\n");
+    }else{
+        //printf("No es un quad\n");
+    }
+
+};
+
+
+
 /*
 TODO:
 1) Parar cuando no hayan cartas suficientes en el mazo
 */
 #endif // TEST_H_INCLUDED
+
