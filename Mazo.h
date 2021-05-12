@@ -19,9 +19,10 @@ struct Carta{ // Representa un mazo de cartas
     char palo[10]; // el palo de la carta
     char numero[8]; // el numero de la carta
     unsigned int estado : 1; // Indica si la carta ya fue sacada del mazo;
+    unsigned int suerte; // Un numero aleatorio que determina la probabilidad de sacar esta carta
 };
 
-struct Mano{ // Representa la mano de cartas exxtraida
+struct Mano{ // Representa la mano de cartas extraida
     char palo[10]; // el palo de la carta
     char numero[8]; // el numero de la carta
 };
@@ -60,6 +61,7 @@ void establecerMazo(struct Carta mazo[]){//Establece los valores de la baraja en
                 }
         strcpy(mazo[i].palo,Palos[i/13]);
         mazo[i].estado = 0;
+        mazo[i].suerte = rand() % 100;
         }
     };
 
@@ -68,6 +70,7 @@ void mostrarCartas(struct Carta mazo[]){ //Imprime todas las cartas en el mazo
             printf("Palo:%s\t",mazo[i].palo);
             printf("Numero:%s\t",mazo[i].numero);
             printf("Tomada:%d\n",mazo[i].estado);
+            printf("Suerte:%d\n",mazo[i].suerte);
     }
 
 };
@@ -77,10 +80,9 @@ void sacarCartas(struct Carta mazo[],struct Carta mano[]){ //Saca 5 cartas aleat
     for (int i = 0; i < TOMA; i++){
         for(;;){ // Ciclo infinito hasta que encuentre una carta que no haya sido sacada
             int VA = rand() % CARTAS; //Valor Aleatorio para determinar la carta a sacar
-            //printf("%d\n",VA);
             if (mazo[VA].estado == 0){
                     mazo[VA].estado = 1;
-                    printf("Palo:%s\tNumero:%s\n",mazo[VA].palo,mazo[VA].numero);
+                    //printf("Palo:%s\tNumero:%s\n",mazo[VA].palo,mazo[VA].numero);
                     strcpy(mano[i].numero, mazo[VA].numero);
                     strcpy(mano[i].palo,mazo[VA].palo);
                     break;
@@ -89,7 +91,7 @@ void sacarCartas(struct Carta mazo[],struct Carta mano[]){ //Saca 5 cartas aleat
     }
 };
 
-void isroyal(struct Carta mano[]){   //Verifica si existe una escalera real dentro de la mano
+int isroyal(struct Carta mano[]){   //Verifica si existe una escalera real dentro de la mano
     int cont =0;                    //Contador de cartas que perfenecen a la escalera real
     if(strcmp(mano[0].palo, mano[1].palo)==0 && strcmp(mano[0].palo, mano[2].palo)==0 && strcmp(mano[0].palo, mano[3].palo)==0 && strcmp(mano[0].palo, mano[4].palo)==0){ //Verifica si todas las cartas son del mismo palo
         for (int i = 0; i<TOMA; i++){
@@ -99,13 +101,13 @@ void isroyal(struct Carta mano[]){   //Verifica si existe una escalera real dent
         }
     }
     if (cont==5){                   //Existen las 5 cartas que forman la escalera real?
-        printf("Es Escalera Real\n");
+       return 1;// printf("Es Escalera Real\n");
     }else{
-        //printf("No es una escalera real\n");
+        return 0;//printf("No es una escalera real\n");
     }
 };
 
-void isfullhouse(struct Carta mano[]){   //Verifica si existe un full house dentro de la mano
+int isfullhouse(struct Carta mano[]){   //Verifica si existe un full house dentro de la mano
     int firstcount=1;                   //Contador del primer numero de carta observado
     int seccount=0;                     //Contador del segundo numero de carta observado
     char numsec[8] = "";
@@ -115,7 +117,7 @@ void isfullhouse(struct Carta mano[]){   //Verifica si existe un full house dent
             firstcount+=1;                              //Si tienen el mismo numero, incrementa el contador
         }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){
             //Si la variable numsec ya fue asignada, entonces hay 3 numeros distintos, por lo tanto no puede haber un full house
-            //printf("No es un fullhouse\n");
+            return 0;//printf("No es un fullhouse\n");
             break;
         }else{
             strcpy(numsec,mano[i].numero);  //Se asigna un segundo numero para hacer las comparaciones
@@ -123,14 +125,14 @@ void isfullhouse(struct Carta mano[]){   //Verifica si existe un full house dent
         }
     }
     if (seccount==3 && firstcount==2 || seccount==2 && firstcount==3){ //3 Y 2 son las unicas combinaciones posibles para full house
-        printf("Es un fullhouse\n");
+       return 1;// printf("Es un fullhouse\n");
     } else{
-        //printf("No es un fullhouse\n");
+        return 0;//printf("No es un fullhouse\n");
     }
 };
 
 
-void isdouble(struct Carta mano[]){ //Verifica si existe un quad dentro de la mano
+int isdouble(struct Carta mano[]){ //Verifica si existe un quad dentro de la mano
     int firstcount=1;   //Contador del primer numero de carta observado
     int seccount=0;     //Contador del segundo numero de carta observado
     int thirdcount=0;   //Contador del tercer numero de carta observado
@@ -142,7 +144,7 @@ void isdouble(struct Carta mano[]){ //Verifica si existe un quad dentro de la ma
             firstcount+=1;
         }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){//Ya se usò la variable y no coincide con la carta actual del ciclo?
             if(strcmp(numthird, "")!=0 && strcmp(numthird, mano[i].numero)!=0){//Ya se usò la variable y no coincide con la carta actual del ciclo?
-                //printf("No es un double pair\n");
+                return 0;//printf("No es un double pair\n");
                 break;  //No puede haber una combinacion de double
             }else{
                 strcpy(numthird,mano[i].numero);  //Se copia el valor de la carta actual a numthird
@@ -155,19 +157,19 @@ void isdouble(struct Carta mano[]){ //Verifica si existe un quad dentro de la ma
     }
     //Analiza las posibles combinaciones de un double pair
     if (firstcount==2 && seccount==2){
-        printf("Es un double pair\n");
+       return 1; //printf("Es un double pair\n");
     }else if (firstcount==2 && thirdcount==2){
-        printf("Es un double pair\n");
+       return 1; //printf("Es un double pair\n");
     }else if (thirdcount==2 && seccount==2){
-        printf("Es un double pair\n");
+        return 1; //printf("Es un double pair\n");
     }else{
-        //printf("No es un double pair\n");
+        return 0;//printf("No es un double pair\n");
     }
 
 };
 
 
-void isquad(struct Carta mano[]){ //Verifica si existe un double dentro de la mano
+int isquad(struct Carta mano[]){ //Verifica si existe un double dentro de la mano
     int firstcount=1;   //Contador del primer numero de carta observado
     int seccount=0;     //Contador del segundo numero de carta observado
     char numsec[8] = "";//ALmacena el segundo valor observado
@@ -176,6 +178,7 @@ void isquad(struct Carta mano[]){ //Verifica si existe un double dentro de la ma
         if(strcmp(mano[0].numero, mano[i].numero)==0 ){ //Coinciden las cartas?
             firstcount+=1;
         }else if(strcmp(numsec, "")!=0 && strcmp(numsec, mano[i].numero)!=0){//Si no coinciden y la segunda variable fue usada, no puede existir un quad
+            return 0;
             break;
         }else{
             strcpy(numsec,mano[i].numero); //Se asigna el numero de la carta a la variable
@@ -183,17 +186,11 @@ void isquad(struct Carta mano[]){ //Verifica si existe un double dentro de la ma
         }
     }
     if (firstcount==4 || seccount==4){  //La primer o segunda carta se reite 4 veces?
-        printf("Es un quad\n");
+       return 1;// printf("Es un quad\n");
     }else{
-        //printf("No es un quad\n");
+        return 0;//printf("No es un quad\n");
     }
 
 };
 
-
-
-/*
-TODO:
-1) Parar cuando no hayan cartas suficientes en el mazo
-*/
 #endif // TEST_H_INCLUDED

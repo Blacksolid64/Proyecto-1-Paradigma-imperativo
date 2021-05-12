@@ -3,27 +3,34 @@
 #include <string.h>
 #include "Mazo.h"
 #include "ProbabilidadesTeoricas.h"
-#include "Estadistica.h"
+#include "Simulador.h"
+//#include "Estadistica.h"
 
 int main()
 {
-	
+    srand(time(NULL));
     int m;
     struct Carta mimazo[CARTAS];
     //la mano deberia ser de 5 cartas, nada más
-    struct Carta mimano[CARTAS];
+    struct Carta mimano[TOMA];
 
     establecerMazo(mimazo);
     //mostrarCartas(mimazo);
+
     sacarCartas(mimazo,mimano);
+
     isroyal(mimano);
     isfullhouse(mimano);
     isquad(mimano);
     isdouble(mimano);
-    printf("Programa para simular eventos probabilisticos en C\n");
-    printf("Ingrese el numero de Simulaciones\n");
-    /*scanf("%d",&m);*/
-    
+
+    //printf("Programa para simular eventos probabilisticos en C\n");
+    //printf("Ingrese el numero de Simulaciones\n");
+    //scanf("%d",&m);
+
+    /*struct Simulador s;
+    iniciarSimulacion(&s);
+
     printf("\n****** Probabilidad Teorica *****\n");
 
     double EscaleraReal = Prob_EscaleraReal();
@@ -49,5 +56,6 @@ int main()
     double varianza = obtener_varianza(5, datos);
     printf("La varianza:                  %f \n",varianza);
 
-    return 0;
+
+    return 0;*/
 }

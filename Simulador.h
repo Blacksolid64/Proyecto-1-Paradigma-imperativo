@@ -1,7 +1,10 @@
 #ifndef SIMULADOR_H_INCLUDED
 #define SIMULADOR_H_INCLUDED
-
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
 #include "Mazo.h"
+//#include "ProbabilidadesTeoricas.h"
+//#include "Estadistica.h"
 //struct Mazo;
 
 struct Simulador {
@@ -24,38 +27,59 @@ struct Simulador {
     int n;
     int m;
 
-    int cantidadManos;
+    int cantidadManos;//Definido en la funcion Tirar Cartas
     //son las manos antes de volver a revolver
     //debe ir en mazo
 };
 
 //recorre las m simulaciones
 void hacerSimulaciones (struct Simulador *simulador){
-
+    printf("Simulación iniciada! Por favor espere...\n");
     for (int i = 0 ; i<simulador->m; i++ ){
-        printf(" m %d",i);
+        double progress = ((double)(i+1)/(double)simulador->m); //Calcula el porcentaje que se ha completado de la simulacion
+        printProgress(progress); // Muestra el porcentaje de la simulacion
         tirarManos(simulador);
         //sumo los contadores a totales
         //y los inicializo
-        printf("\n");
     }
+    printf("\nSimulación completada!\nGracias por su paciencia!\n");
+    printf("Los datos encontrados en %d simulaciones con %d manos sacadas por simulacion son los siguientes:\n",simulador->m,simulador->n);
+    printf("Dobles:%d\nFullhouse:%d\nPoker:%d\nEscalera Real:%d\n",simulador->countDoubles_total,simulador->countFull_total,simulador->countPoker_total,simulador->countRoyal_total);
     //determino probabilidades
 }
 
-//recorre las n manos
-void tirarManos (struct Simulador *simulador){ //
-    for (int i = 0 ; i<simulador->n; i++ ){
-            printf(" n %d",i);
-        //asumo que el mazo ya está formado
-        //llamo a la funcion que me da 5 cartas
-        //llamo a la funcion que determina cual jugada es
+//recorre las n manos de cartas en la simulacion
+void tirarManos (struct Simulador *simulador){
+    int CriterioReestablecimiento = 10; //Establece un criterio para el reestablecimiento del mazo de cartas
+    struct Carta mimano[TOMA];
+    for (int i = 0 ; i<simulador->n; i++ ){ //Reestablece las cartas cada vez que se llama
+        if (i % CriterioReestablecimiento == 0){
+                establecerMazo(simulador->mazo);}
+        sacarCartas(simulador->mazo,mimano);  //llamo a la funcion que me da 5 cartas
+        identificarMano(mimano,simulador); //llamo a la funcion que determina cual jugada es
         //sumo a contadores de simulador
 
     }
 }
+//Imprime la barra de progreso de la simulacion
+void printProgress(double percentage) {
+    int val = (int) (percentage * 100);
+    int lpad = (int) (percentage * PBWIDTH);
+    int rpad = PBWIDTH - lpad;
+    printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
+    fflush(stdout);
+}
 
-void identificarMano (){
 
+void identificarMano (struct Carta mimano[],struct Simulador *simulador){
+    int a = isroyal(mimano);
+    int b = isfullhouse(mimano);
+    int c = isquad(mimano);
+    int d =isdouble(mimano);
+    simulador->countRoyal_total += a;
+    simulador->countFull_total += b;
+    simulador->countPoker_total += c;
+    simulador->countDoubles_total += d;
 }
 
 void cargarDatos(struct Simulador *simulador){
@@ -76,17 +100,40 @@ void cargarDatos(struct Simulador *simulador){
     scanf("%d",&simulador->m);
     printf("Ingrese el numero de Manos : \n");
     scanf("%d",&simulador->n);
-    printf("m es : %d\n", simulador->m);
-    printf("n es : %d\n", simulador->n);
-
-    //tambien inicializa la mano
-
-
+    printf("Numero de simulaciones es : %d\n", simulador->m);
+    printf("Numero de manos por simulacion es : %d\n", simulador->n);
+    establecerMazo(simulador->mazo);
 }
 
 void iniciarSimulacion(struct Simulador *simulador){
+    printf("Iniciando simulación:\n");
     cargarDatos(simulador);
     hacerSimulaciones(simulador);
+    //Comentado por que tengo un error con la libreria conio.h; dice que no existe en el sistema
+    /*printf("\n****** Probabilidad Teorica *****\n");
+
+    double EscaleraReal = Prob_EscaleraReal();
+    printf("Probabilidad de EscaleraReal: %lf %% \n",EscaleraReal*100);
+
+    double Quad = Prob_Quad();
+    printf("Probabilidad de Quad:         %lf %% \n",Quad*100);
+
+    double FullHouse = Prob_FullHouse();
+    printf("Probabilidad de FullHouse:    %lf %% \n",FullHouse*100);
+
+    double DosPares = Prob_DosPares();
+    printf("Probabilidad de Dos Pares:    %lf %% \n",DosPares*100);
+
+    printf("\n****** Metodos Estadisticos *****\n");
+
+    double datos[5] = {19.2, 10.6, 8.7, 17.9, 9.4};
+    printf("\ndouble datos[5] = {19.2, 10.6, 8.7, 17.9, 9.4};\n");
+
+    double media = obtener_promedio(5, datos);
+    printf("La media:                     %f \n",media);
+
+    double varianza = obtener_varianza(5, datos);
+    printf("La varianza:                  %f \n",varianza);*/
 
 }
 #endif // SIMULADOR_H_INCLUDED
