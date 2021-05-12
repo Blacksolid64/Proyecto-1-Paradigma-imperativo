@@ -7,6 +7,14 @@
 #include "math.h"
 #include "conio.h"
 
+/*
+* Función:  Obtener la varianza
+* Uso:  m = obtener_promedio( cantidad , datos );
+* --------------------------------------------------------
+* Calcula el valor promedio de un conjunto de datos numéricos, 
+* calculada como la suma del conjunto de valores dividida 
+* entre el número total de valores. 
+*/
 double obtener_promedio(int cantidad, double *datos){
   double suma = 0;
   for (size_t i = 0; i < cantidad; i++) {
@@ -15,6 +23,14 @@ double obtener_promedio(int cantidad, double *datos){
   return suma / cantidad;
 }
 
+/*
+* Función:  Obtener la Varianza
+* Uso:  m = obtener_varianza( cantidad , datos );
+* --------------------------------------------------------
+* Calcula la medida de dispersión que se utiliza para 
+* representar la variabilidad de un conjunto de datos 
+* respecto de la media aritmética de los mismo.
+*/
 double obtener_varianza(int cantidad, double *datos){
   int n = cantidad;
   double promedio = obtener_promedio(n, datos);
