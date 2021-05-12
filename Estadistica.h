@@ -43,20 +43,27 @@ double obtener_varianza(int cantidad, double *datos){
   double promedio = obtener_promedio(n, datos);
   double varianza = 0;
   for (size_t i = 0; i < n; i++) {
-    //varianza += pow((datos[i] - promedio), 2.0);
+    varianza += pow((datos[i] - promedio), 2.0);
   }
   return varianza / (n -1);
 }
 
+int suma (int m, double *datos){
+    int suma = 0;
+    for (int i = 0; i <=m; i++){
+        suma += datos[i];
+    }
+    return suma;
+}
 
-/*
-double obtener_varianza_b(int repeticiones, int m, double datos){
-    double promedio = obtener_promedio_b(repeticiones, datos);
+
+double obtener_varianza_b(int repeticiones, int m, double *datos){
+    double promedio = obtener_promedio_b(repeticiones, suma(m,datos));
     double varianza = 0;
     for(size_t i = 0; i < m; i++){
         varianza += pow((datos[i]-promedio),2.0);
     }
     return varianza / (repeticiones-1);
-}*/
+}
 
 #endif //

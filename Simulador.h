@@ -19,8 +19,6 @@ struct Simulador {
     int countPoker[MAX];//cuatro iguales
     int countRoyal[MAX];//escalera real
 
-    double media[MAX];
-    double varianza[MAX];
 
     int countDoubles_total;//dos pares
     int countFull_total;//full house
@@ -128,8 +126,7 @@ void limpiarArrays (struct Simulador *simulador){
         simulador->countFull[i] = 0;
         simulador->countPoker[i] = 0;
         simulador->countRoyal[i] = 0;
-        simulador->media[i] = 0;
-        simulador->varianza[i] = 0;
+
     }
 }
 
