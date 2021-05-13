@@ -179,28 +179,28 @@ void calcularEstadisticas (struct Simulador *simulador){
     printf("Media Experimental  :%f%%\n", obtener_promedio_b(simulador->m * simulador->n,simulador->countDoubles_total)*100);
     printf("Varianza            :%f%%\n", obtener_varianza_b(simulador->m* simulador->n,simulador->m,simulador->countDoubles)*100);
     printf("Prob. teorica       :%f%%\n", Prob_DosPares()*100);
-    printf("Error de la media   :%f%%\n", (Prob_DosPares()-obtener_promedio_b(simulador->m * simulador->n,simulador->countDoubles_total))*100);
+    printf("Error de la media   :%f%%\n", (fabs(Prob_DosPares()-obtener_promedio_b(simulador->m * simulador->n,simulador->countDoubles_total))/Prob_DosPares())*100);
 
 
     printf("\n****** Probabilidad de FullHouse*****\n");
     printf("Media Experimental  :%f%%\n", obtener_promedio_b(simulador->m * simulador->n,simulador->countFull_total)*100);
     printf("Varianza            :%f%%\n", obtener_varianza_b(simulador->m* simulador->n,simulador->m,simulador->countFull)*100);
     printf("Prob. teorica       :%f%%\n", Prob_FullHouse()*100);
-    printf("Error de la media   :%f%%\n", (Prob_FullHouse()-obtener_promedio_b(simulador->m * simulador->n,simulador->countFull_total))*100);
+    printf("Error de la media   :%f%%\n", (fabs(Prob_FullHouse()-obtener_promedio_b(simulador->m * simulador->n,simulador->countFull_total))/Prob_FullHouse())*100);
 
 
     printf("\n****** Probabilidad de Quad*****\n");
     printf("Media Experimental  :%f%%\n", obtener_promedio_b(simulador->m * simulador->n,simulador->countPoker_total)*100);
     printf("Varianza            :%f%%\n", obtener_varianza_b(simulador->m* simulador->n,simulador->m,simulador->countPoker)*100);
     printf("Prob. teorica       :%f%%\n", Prob_Quad()*100);
-    printf("Error de la media   :%f%%\n", (Prob_Quad()-obtener_promedio_b(simulador->m * simulador->n,simulador->countPoker_total))*100);
+    printf("Error de la media   :%f%%\n", (fabs(Prob_Quad()-obtener_promedio_b(simulador->m * simulador->n,simulador->countPoker_total))/Prob_Quad())*100);
 
 
     printf("\n****** Probabilidad de Escalera Real*****\n");
     printf("Media Experimental  :%f%%\n", obtener_promedio_b(simulador->m * simulador->n,simulador->countRoyal_total)*100);
     printf("Varianza            :%f%%\n", obtener_varianza_b(simulador->m* simulador->n,simulador->m,simulador->countRoyal)*100);
     printf("Prob. teorica       :%f%%\n", Prob_EscaleraReal()*100);
-    printf("Error de la media   :%f%%\n", (Prob_EscaleraReal()-obtener_promedio_b(simulador->m * simulador->n,simulador->countRoyal_total))*100);
+    printf("Error de la media   :%f%%\n", (fabs(Prob_EscaleraReal()-obtener_promedio_b(simulador->m * simulador->n,simulador->countRoyal_total))/Prob_EscaleraReal())*100);
 
 
 }
