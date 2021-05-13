@@ -3,7 +3,6 @@
 #include <string.h>
 #include "Mazo.h"
 #include "Simulador.h"
-//#include "Includes.h"
 int main()
 
 {
