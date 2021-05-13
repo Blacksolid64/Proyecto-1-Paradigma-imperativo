@@ -63,7 +63,7 @@ double obtener_varianza_b(int repeticiones, int m, double *datos){
     for(size_t i = 0; i < m; i++){
         varianza += pow((datos[i]-promedio),2.0);
     }
-    return varianza / (repeticiones-1);
+    return varianza / m;
 }
 
 #endif //
