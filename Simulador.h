@@ -35,7 +35,13 @@ struct Simulador {
     //son las manos antes de volver a revolver
     //debe ir en mazo
 };
-
+/*
+Función : identificarMano
+uso : identificarMano(mimano, simulador)
+---------------------------------------------
+identifica cual mano existe en "mimano"
+y suma en el contador dentro de la estructura "simulador"
+*/
 void identificarMano (struct Carta mimano[],struct Simulador *simulador){
     int a = isroyal(mimano);
     int b = isfullhouse(mimano);
@@ -54,8 +60,12 @@ void identificarMano (struct Carta mimano[],struct Simulador *simulador){
     simulador->countRoyal[i] += a;
 }
 
-
-//recorre las n manos de cartas en la simulacion
+/*
+Funcion : tirarManos
+Uso : tirarManos(simulador)
+-------------------------------- -------------------
+recorre las n manosde cartas en la simulacion
+*/
 void tirarManos (struct Simulador *simulador){
     //int CriterioReestablecimiento = 10; //Establece un criterio para el reestablecimiento del mazo de cartas
     struct Carta mimano[TOMA];
@@ -68,7 +78,13 @@ void tirarManos (struct Simulador *simulador){
 
     }
 }
-//Imprime la barra de progreso de la simulacion
+
+/*
+Funcion : printProgress
+Uso : printProgress(percentage)
+---------------------------------------------------
+Imprime la barra de progreso de la simulacion
+*/
 void printProgress(double percentage) {
     int val = (int) (percentage * 100);
     int lpad = (int) (percentage * PBWIDTH);
@@ -77,7 +93,13 @@ void printProgress(double percentage) {
     fflush(stdout);
 }
 
-
+/*
+Funcion : hacerSimulaciones
+Uso : hacerSimulaciones(simulador)
+---------------------------------------------------
+recorre las m simulaciones y dentro llama
+a tirar manos
+*/
 //recorre las m simulaciones
 void hacerSimulaciones (struct Simulador *simulador){
     printf("Simulación iniciada! Por favor espere...%d * %d\n",simulador->m,simulador->n);
@@ -95,6 +117,12 @@ void hacerSimulaciones (struct Simulador *simulador){
     //determino probabilidades
 }
 
+/*
+Funcion : limpiarArrays
+Uso : limpiarArrays(simulador)
+---------------------------------------------------
+limpia los primeros m campos en el array dejandolos en cero
+*/
 void limpiarArrays (struct Simulador *simulador){
     for(int i = 0; i<=simulador->m;i++){
 
@@ -106,6 +134,14 @@ void limpiarArrays (struct Simulador *simulador){
     }
 }
 
+/*
+Funcion : cargarDatos
+Uso : cargarDatos(simulador)
+---------------------------------------------------
+incializa los datos de la estructura "simulador"
+y solicita la cantidad m de Simulaciones
+y la cantidad n de manos
+*/
 void cargarDatos(struct Simulador *simulador){
 
     simulador->countDoubles_total = 0;
@@ -131,7 +167,12 @@ void cargarDatos(struct Simulador *simulador){
     establecerMazo(simulador->mazo);
 }
 
-
+/*
+Funcion : calcularEstadisticas
+Uso : calcularEstadisticas(simulador)
+---------------------------------------------------
+presenta todos los datos recolectados
+*/
 void calcularEstadisticas (struct Simulador *simulador){
 
     printf("\n****** Probabilidad de Dobles*****\n");
@@ -164,6 +205,12 @@ void calcularEstadisticas (struct Simulador *simulador){
 
 }
 
+/*
+Funcion : iniciarSimulacion
+Uso : iniciarSimulacion(simulador)
+---------------------------------------------------
+tiene las funciones necesarias para desarrollar el programas
+*/
 void iniciarSimulacion(struct Simulador *simulador){
     printf("Iniciando simulación:\n");
     cargarDatos(simulador);
@@ -188,4 +235,3 @@ void iniciarSimulacion(struct Simulador *simulador){
 
 }
 #endif // SIMULADOR_H_INCLUDED
-
